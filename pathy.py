@@ -20,11 +20,11 @@ for p in disk_partitions(all=True):
         s, d = p.mountpoint, p.device
     else:
         s, d = p.device, p.mountpoint
-    if s and u.startswith(s):
+    if s and (u.startswith(s) if a.r else u[:len(s)].casefold() == s.casefold()):
         c.append((s, d))
 if c:
     c.sort(key=lambda s: len(s[0]), reverse=True)
-    o = u.replace(c[0][0], c[0][1])
+    o = c[0][1] + u[len(c[0][0]):]
     if a.r:
         o = o.replace('/', '\\')
     print(o, end='')
