@@ -9,6 +9,9 @@ ap.add_argument('-r', action='store_true')
 a = ap.parse_args()
 
 u = a.path.replace('\\', '/')
+# Bash double-quotes turn \\server into \server; CIFS devices are //server/share.
+if not a.r and u.startswith('/') and not u.startswith('//'):
+    u = '/' + u
 c = []
 for p in disk_partitions(all=True):
     if a.r:
